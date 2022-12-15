@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::Base
-    skip_before_action :verify_authenticity_token
+    
     private
         def is_login?
             return session[:logged_in] == true
@@ -14,16 +14,19 @@ class ApplicationController < ActionController::Base
         end
 
         def role?
-            u = User.where(id: session[:id]).first   
-            if u.user_type == 0
-                return 'admin'
-            elsif u.user_type == 1
-                return 'seller'
-            elsif u.user_type == 2
-                return 'buyer'
+            if is_login?
+                u = User.where(id: session[:id]).first   
+                if u.user_type == 0
+                    return 'admin'
+                elsif u.user_type == 1
+                    return 'seller'
+                else
+                    return 'buyer'
+                end   
             else
-                return 'guest'
-            end        
+                return 'guest' 
+            end
+                
         end
         
         def login_again?

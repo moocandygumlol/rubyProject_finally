@@ -74,24 +74,18 @@ class MainController < ApplicationController
 
   def phistory
     must_be_logged_in
-    u = User.where(id: session[:id]).first
-    if u and ((u.user_type == 0) or (u.user_type == 2))
-      @history = Inventory.where(user_id: session[:id]).order(:created_at)
-      render "purchase"
-    else
+    if role? == 'seller'
       redirect_to main_path, notice: "You have no permission to access this page"
     end
+    @history = Inventory.where(user_id: session[:id]).order(:created_at)
   end
 
   def shistory
     must_be_logged_in
-    u = User.where(id: session[:id]).first
-    if u and ((u.user_type == 0) or (u.user_type == 1))
-      @history = Inventory.where(seller_id: session[:id]).order(:created_at)
-      render "sale"
-    else
+    if role? == 'buyer'
       redirect_to main_path, notice: "You have no permission to access this page"
     end
+    @history = Inventory.where(seller_id: session[:id]).order(:created_at)
   end
 
   def inventory
