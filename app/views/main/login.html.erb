@@ -1,0 +1,14 @@
+<%= form_with url: main_create_path, method: :post, class: "text-center" , data: {turbo: false} do |f| %>
+    <div class = "h1 mb-3">Login</div>
+    <hr>
+    <div style = "width:60%;" class = "mx-auto mb-3">
+        <%= f.label :email, "Email", class: "form-label"%>
+        <%= f.text_field :email, class: "form-control"%>
+    </div>
+    <div style = "width:60%;" class = "mx-auto mb-3">
+        <%= f.label :password, "password", class: "form-label"%>
+        <%= f.password_field :password, class: "form-control"%>
+    </div>
+   <%=f.submit :Login , class: "btn btn-success"%> | 
+   <%= link_to "back to main" , main_path, class: "btn btn-primary"%>
+<% end %>

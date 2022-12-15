@@ -1,0 +1,71 @@
+<div class = "text-center">
+    <h3>Top Seller</h3>
+    <hr>
+    
+    <%= form_with url: create_tables_path, method: :post , data: {turbo: false} do |f| %>
+        <div style = "width:60%;" class = "mx-auto mb-3">
+            <%= f.label :startdate, "Start Date", class: "form-label"%>
+            <%=f.datetime_field :startdate, class: "form-control"%>
+        </div>
+        <div style = "width:60%;" class = "mx-auto mb-3">
+            <%= f.label :stopdate, "Stop Date", class: "form-label"%>
+            <%=f.datetime_field :finaldate, class: "form-control"%>
+        </div>
+        <%=f.submit :Search , class: "btn btn-success mb-3"%>
+        <%= link_to "back to main" , main_path, class: "btn btn-primary mb-3"%>
+    <%end%>
+    
+
+    <%if session[:create]%>
+        <% if @startDate == '' or @finalDate == ''%>
+            <div class = "h4 text-danger">You need to complete your start date and final date</div>
+        <%else%>
+            <%$x = Inventory.where(created_at: @startDate..@finalDate)%>
+            <%$total = Inventory.where(created_at: @startDate..@finalDate).select("seller_id, item_id, sum(price * quantity) as total_price").group("item_id").order("total_price DESC")%>
+            <%$amount = Inventory.where(created_at: @startDate..@finalDate).select("seller_id, item_id, sum(quantity) as total_amount").group("item_id").order("total_amount DESC")%>
+            <%if $total.first != nil%>
+            <table class = "table table-light table-bordered">
+                <thead class = "table-dark">
+                    <tr>
+                        <th>Seller Name</th>
+                        <th>Item</th>
+                        <th>Best Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <% $total = $total.first%>
+                        <th><%=User.where(id: $total.seller_id).first.name%></th>
+                        <th><%=Item.where(id: $total.item_id).first.name%></th>
+                        <th><%=$total.total_price%></th>
+                    </tr>
+                </tbody>
+            </table>
+            <%else%>
+                <div class = "h4 text-danger">No one is seller that has best price in your range</div>
+            <%end%>
+            <%if $amount.first != nil%>
+            <table class = "table table-light table-bordered">
+                <thead class = "table-dark">
+                    <tr>
+                        <th>Seller Name</th>
+                        <th>Item</th>
+                        <th>Best Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <%$amount = $amount.first%>
+                        <th><%=User.where(id: $amount.seller_id).first.name%></th>
+                        <th><%=Item.where(id: $amount.item_id).first.name%></th>
+                        <th><%=$amount.total_amount%></th>
+                    </tr>
+                </tbody>
+            </table>
+            <%else%>
+                <div class = "h4 text-danger">No one is seller that has best amount of quantity in your range</div>
+            <%end%>
+        <%end%>
+        <% session[:create] = false%>
+    <%end%>
+</div>

@@ -1,0 +1,62 @@
+<h1 class = "text-center">Home</h1>
+<hr>
+<div class = "text-center mb-3">Welcome to RubyOnHell Store : 
+    <% if @role == 'guest'%>
+        guest
+    <%else%>
+        <%= User.where(id: @id).first.name%>
+    <%end%>
+</div>
+
+<% if @role == 'admin' or @role == 'seller' or @role == 'buyer'%>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <%= link_to "Profile" , profile_path , class: "btn btn-secondary"%>
+        <div></div>
+    </div>
+<%end%>
+
+<% if @role == 'admin' or @role == 'seller'%>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <%= link_to "My Inventory" , my_inventory_path , class: "btn btn-warning"%>
+        <%= link_to "Top Seller" , top_seller_path , class: "btn btn-light"%>
+        <%= link_to "Sale History" , sale_history_path , class: "btn btn-info"%>
+        <div></div>
+    </div>
+<%end%>
+
+<% if @role == 'admin' or @role == 'buyer'%>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <%= link_to "My Market" , my_market_path , class: "btn btn-success"%>
+        <%= link_to "Purchase History" , purchase_history_path , class: "btn btn-dark"%>
+        <div></div>
+    </div>
+<%end%>
+
+<% if @role == 'admin'%>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <%= link_to "Add Items" , items_path , class: "btn btn-primary"%>
+        <div></div>
+    </div>
+    
+<%end%>
+
+<% if @role == 'guest'%>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <%= link_to "My Market" , my_market_path , class: "btn btn-success"%>
+        <%= link_to "LogIn" , login_path , class: "btn btn-primary"%>        
+        <div></div>
+    </div>
+<%end%>
+
+<% if @role == 'admin' or @role == 'seller' or @role == 'buyer'%>
+    <div class="d-grid gap-2 col-6 mx-auto">
+        <%= link_to "Logout" , main_destroy_path , class: "btn btn-danger"%>
+        <div></div>
+    </div>
+<%end%>
+
+
+
+
+
+

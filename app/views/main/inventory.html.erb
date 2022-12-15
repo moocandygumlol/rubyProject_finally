@@ -1,0 +1,65 @@
+<div class = "text-center">
+    <h1>My inventory</h1>
+    <hr>
+    <%session[:back] = "my_inventory"%>
+    <% addurl = "/addmarket"%>
+    <%= form_with url: addurl, method: :post , data: {turbo: false} do |f| %>
+        <%=f.hidden_field :user_id, value: session[:id]%>
+        <div class = "row">
+            <div class = "col">
+                <%= f.label :item, "Item", class: "form-label"%>
+                <br>
+                <%= f.select :item_id, @items.map{|i| [i.name, i.id]}, value: "please select", class: "form-control"%>
+            </div>
+            <div class = "col">
+                <%= f.label :price, "Price", class: "form-label"%>
+                <%=f.text_field :price , class: "form-control"%>
+            </div>
+            <div class = "col">
+                <%= f.label :quantity, "Quantity", class: "form-label"%>
+                <%=f.text_field :quantity , class: "form-control"%>
+            </div>
+            <div class = "col">
+                <%= f.label :add, "Add Button", class: "form-label"%>
+                <%= f.submit :add , class: "btn btn-success mb-2 form-control" %>
+            </div>
+        </div>
+    <% end %>
+    <table class="table table-light table-bordered" style="width:100%; padding: 0.5rem;">
+        <thead class = "table-dark">
+            <tr>
+                <th>Item</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>save</th>
+                <th>delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% @inven.each do |i| %>
+            <% if Item.where(id: i.item_id).first.enable == true %>
+                <% item_name = Item.where(id: i.item_id).first.name%>
+                <% url = "/updateinventory"%>
+                <%= form_with url: url, method: :post , data: {turbo: false} do |f| %>
+                <%=f.hidden_field :market_id, value: i.id%>
+                <%=f.hidden_field :price_check, value: i.price%>
+                <%=f.hidden_field :quantity_check, value: i.quantity%>
+                <tr>
+                    <td><%=item_name%></td>
+                    <td><%=f.number_field :price, step: :any, value: i.price, class: "form-control"%></td>
+                    <td><%=f.number_field :quantity, value: i.quantity, class: "form-control"%></td>
+                    <td><%=f.submit :save , class: "btn btn-success"%></td>
+                <%end%>
+                    <td> <%= button_to "Delete", i, method: :delete , class: "btn btn-danger"%></td>
+                </tr>
+            <%end%>
+            <%end%>
+        </tbody>
+    </table>
+    <%= link_to "back to main" , main_path, class: "btn btn-primary mb-3"%>
+</div>
+<script type="text/javascript" class="init">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>

@@ -1,0 +1,17 @@
+<div class = "text-center h1">Editing User</div>
+<hr>
+
+<div class = "text-center mt-3">
+  <%= render "form", user: @user %>
+<div>
+<br>
+
+<div>
+  <%= link_to "Show this user", @user , class: "btn btn-secondary"%> |
+  <%if session[:profile] == "home"%>
+    <%= link_to "Back to home", main_path , class: "btn btn-primary"%> |
+  <%else%>
+    <%= link_to "Back to users", users_path , class: "btn btn-primary"%> |
+  <%end%>
+  <%= link_to "change password", "/changepassword", class: "btn btn-danger" %>
+</div>

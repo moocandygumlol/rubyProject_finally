@@ -1,0 +1,38 @@
+<%= form_with(model: item) do |form| %>
+  <%= form.hidden_field :lock_version%>
+  <% if item.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(item.errors.count, "error") %> prohibited this item from being saved:</h2>
+
+      <ul>
+        <% item.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div style = "width:60%;" class = "mx-auto mb-3">
+      <%= form.label :name, class: "form-label" %>
+      <%= form.text_field :name , class: "form-control"%>
+  </div>
+
+  <div style = "width:60%;" class = "mx-auto mb-3">
+      <%= form.label :category, class: "form-label" %>
+      <%= form.text_field :category , class: "form-control"%>
+  </div>
+
+  <div style = "width:60%;" class = "mx-auto mb-3 class="form-check"">
+      <%= form.check_box :enable , class: "form-check-input"%>
+      <%= form.label :enable, class: "form-check-label" %>
+  </div>
+
+  <div style = "width:60%;" class = "mx-auto mb-3">
+      <%= form.label :picture, class: "form-label" %>
+      <%= form.file_field :picture %>
+  </div>
+  
+  <div>
+    <%= form.submit :Update , class: "btn btn-success" %>
+  </div>
+<% end %>

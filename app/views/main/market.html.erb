@@ -1,0 +1,84 @@
+<div class = "text-center">
+    <div class = "h1">My_Market</div>
+    <hr>
+    <%= form_with url: search_path, method: :post , data: {turbo: false} do |f| %>
+        <%=f.label :name , "Category Search: "%>
+        <%= f.select :c_search, @c%>
+        <%=f.submit :search %>
+    <%end%>
+    <table id="example" class="table table-light table-bordered" style="width:100%; padding: 0.5rem;">
+        <thead class = "table-dark">
+            <tr>
+                <th class = "text-center">Name Item</th>
+                <th class = "text-center">Picture</th>
+                <th class = "text-center">Category</th>
+                <th class = "text-center">Name Seller</th>
+                <th class = "text-center">Price</th>
+                <th class = "text-center">Quantity</th>
+                <%if @role != 'guest'%>
+                    <th>amount</th>
+                    <th>Buy</th>
+                <% end %>
+            </tr>
+        </thead>
+        
+        
+        <tbody>
+        <% for e in @u do%>
+            
+        <%end%>
+        <% for e in @u do%>
+            <% if e.enable == 1%>
+                <% x = User.where(id: e.user_id).first%>
+                <% y = Item.where(id: e.item_id).first%>
+                <% if @c_default != "all"%>
+                    <%if e.category == @c_default%>
+                        <tr>
+                            <td class = "text-center"><%=e.name%></td>
+                            <td class = "text-center"><%= image_tag rails_blob_path(y.picture , disposition: :attachment), style: "width: 150px"%></td>
+                            <td class = "text-center"><%=e.category%></td>
+                            <td class = "text-center"><%=x.name%></td>
+                            <td class = "text-center"><%=e.price%></td>
+                            <td class = "text-center"><%=e.quantity%></td>
+                            <%if @role != 'guest'%>
+                                <%= form_with url: buy_path, method: :post , data: {turbo: false} do |f| %>
+                                    <%=f.hidden_field :amount_check , value: e.quantity%>
+                                    <%=f.hidden_field :f_id , value: e.id%>
+                                    <td class = "text-center"><%=f.number_field :amount , in: 1..1000000, step: 1, class: "form-control"%></td>
+                                    <td class = "text-center"><%=f.submit :Buy , class: "btn btn-success"%></td>
+                                <%end%>
+                            <% end %>  
+                        </tr>
+                    <%end%>
+                <% else%>
+                        <tr>
+                            <td class = "text-center"><%=e.name%></td>
+                            <td class = "text-center"><%= image_tag rails_blob_path(y.picture , disposition: :attachment), style: "width: 150px"%></td>
+                            <td class = "text-center"><%=e.category%></td>
+                            <td class = "text-center"><%=x.name%></td>
+                            <td class = "text-center"><%=e.price%></td>
+                            <td class = "text-center"><%=e.quantity%></td>
+                            <%if @role != 'guest'%>
+                                <%= form_with url: buy_path, method: :post , data: {turbo: false} do |f| %>
+                                    <%=f.hidden_field :amount_check , value: e.quantity%>
+                                    <%=f.hidden_field :f_id , value: e.id%>
+                                    <td class = "text-center"><%=f.number_field :amount , in: 1..1000000, step: 1, class: "form-control"%></td>
+                                    <td class = "text-center"><%=f.submit :Buy , class: "btn btn-success"%></td>
+                                <%end%>
+                            <% end %>  
+                        </tr>
+                <%end%>
+            <% end%>
+        <%end%>
+        </tbody>
+    </table>
+    <%= link_to "back to main" , main_path, class: "btn btn-primary mb-3"%>
+</div>
+<% session[:search] = false%>
+<script type="text/javascript" class="init">
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
+
+

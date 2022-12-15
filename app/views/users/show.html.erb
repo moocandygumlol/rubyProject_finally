@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+<div class = "text-center h1">Profile</div>
+<hr>
+<div class = "text-center mt-3">
+  <%= render @user %>
+<div>
+<div class = "text-center">
+  <%= link_to "Edit this user", edit_user_path(@user) , class: "btn btn-warning"%> |
+  <%if session[:profile] == "home"%>
+    <%= link_to "Back to home", main_path , class: "btn btn-primary"%>
+  <%else%>
+    <%= link_to "Back to users", users_path , class: "btn btn-primary"%> 
+  <%end%>
+
+  <%= button_to "Destroy this user", @user, method: :delete , class: "btn btn-danger mt-2"%>
+</div>
